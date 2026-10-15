@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FoodRescue Connect</title>
+<style>
+:root{--green:#18794e;--green2:#e8f5ec;--ink:#18332a;--muted:#64756d;--cream:#f7faf7;--line:#dce8df;--orange:#f2a65a}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--cream);color:var(--ink)}
+header{background:linear-gradient(120deg,#145c3b,#25865b);color:white;padding:24px 18px 30px}
+.wrap{max-width:1050px;margin:auto}.brand{font-size:13px;letter-spacing:2px;text-transform:uppercase;opacity:.9;font-weight:700}
+h1{font-size:clamp(28px,5vw,42px);line-height:1.1;margin:10px 0}header p{max-width:650px;line-height:1.55;margin:10px 0 18px;color:#e5f4e9}
+.btn{border:0;border-radius:10px;padding:11px 15px;font-weight:700;cursor:pointer;font-size:14px;background:var(--green);color:white}.btn.light{background:white;color:var(--green)}.btn.outline{background:transparent;color:var(--green);border:1px solid var(--green)}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin:18px auto;padding:0 16px;max-width:1050px}
+nav button{border:1px solid var(--line);background:white;color:var(--ink);padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:650}
+nav button.active{background:var(--green);color:white;border-color:var(--green)}
+main{max-width:1050px;margin:0 auto;padding:0 16px 38px}.view{display:none}.view.active{display:block}
+h2{margin:12px 0 6px;font-size:25px}.sub{color:var(--muted);margin:0 0 20px;line-height:1.5}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}
+.stat,.panel,.food-card{background:white;border:1px solid var(--line);border-radius:16px;padding:17px;box-shadow:0 3px 12px #163a2410}
+.stat span{display:block;color:var(--muted);font-size:13px}.stat strong{display:block;font-size:27px;margin-top:5px}
+.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:14px}.panel h3{margin:0 0 12px}.steps{display:grid;gap:12px}.step{display:flex;gap:11px;align-items:flex-start}.bubble{width:34px;height:34px;flex:0 0 34px;border-radius:11px;background:var(--green2);display:grid;place-items:center}
+.food-list{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}.food-card h3{margin:8px 0 5px}.pill{display:inline-block;background:var(--green2);color:var(--green);padding:5px 9px;border-radius:99px;font-size:12px;font-weight:750}.food-card p{margin:7px 0;color:var(--muted);font-size:14px;line-height:1.45}.food-card .meta{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:13px;margin-top:12px}
+form{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}label{font-size:13px;font-weight:700}input,select,textarea{width:100%;border:1px solid #cbd9ce;border-radius:10px;padding:11px 12px;font:inherit;background:white;color:var(--ink)}textarea{min-height:82px;resize:vertical}.check{display:flex;gap:9px;align-items:flex-start;font-size:13px;color:var(--muted);line-height:1.4}.check input{width:auto;margin-top:3px}
+.filters{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.filters input,.filters select{max-width:230px}
+.notice{background:#fff7e9;border:1px solid #f5d7a6;padding:12px 14px;border-radius:12px;color:#72501e;font-size:13px;line-height:1.5;margin:15px 0}
+.empty{padding:25px;text-align:center;color:var(--muted);background:white;border:1px dashed var(--line);border-radius:14px}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:24px 16px;border-top:1px solid var(--line)}
+@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}.grid,.food-list{grid-template-columns:1fr}form{grid-template-columns:1fr}.field.full{grid-column:auto}header{padding-top:20px}.stat strong{font-size:23px}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="brand">🌱 FoodRescue Connect</div>
+<h1>Good food deserves<br>another chance.</h1>
+<p>A simple community platform to connect food donors with verified NGOs and volunteers, so safe surplus food can reach people who need it.</p>
+<button class="btn light" onclick="showView('donate')">＋ Donate surplus food</button>
+<button class="btn" style="background:#ffffff20;border:1px solid #ffffff80;margin-left:6px" onclick="showView('browse')">Find available food</button>
+</div></header>
+<nav>
+<button class="active" data-view="home" onclick="showView('home')">Overview</button>
+<button data-view="browse" onclick="showView('browse')">Available food</button>
+<button data-view="donate" onclick="showView('donate')">Donate food</button>
+<button data-view="impact" onclick="showView('impact')">Community impact</button>
+</nav>
+<main>
+<section id="home" class="view active">
+<h2>Small actions. Real impact.</h2><p class="sub">A demo dashboard showing how surplus food could be shared locally.</p>
+<div class="stats">
+<div class="stat"><span>Food listings</span><strong id="statListings">3</strong></div>
+<div class="stat"><span>Meals represented</span><strong id="statMeals">190</strong></div>
+<div class="stat"><span>Community partners</span><strong>12</strong></div>
+<div class="stat"><span>Rescue status</span><strong style="font-size:19px;color:var(--green)">Growing</strong></div>
+</div>
+<div class="grid">
+<div class="panel"><h3>How it works</h3><div class="steps">
+<div class="step"><div class="bubble">🍲</div><div><b>1. Donor posts food</b><p class="sub">Restaurants, hostels and event organisers add quantity, pickup time and storage details.</p></div></div>
+<div class="step"><div class="bubble">🤝</div><div><b>2. A community partner claims it</b><p class="sub">An NGO or volunteer coordinates collection before the deadline.</p></div></div>
+<div class="step"><div class="bubble">✓</div><div><b>3. Handover is recorded</b><p class="sub">Both sides confirm collection and the rescued quantity is counted.</p></div></div>
+</div></div>
+<div class="panel"><h3>Food safety first</h3><p class="sub">Only share food that has been handled and stored safely. Add clear allergen and preparation details, and never donate food that may be unsafe.</p><div class="notice">Demo note: listings and impact figures are sample data. This file does not verify NGOs, arrange real pickups, or send notifications.</div><button class="btn" onclick="showView('donate')">Create a listing</button></div>
+</div>
+<h2 style="margin-top:28px">Recently listed</h2><div id="homeListings" class="food-list"></div>
+</section>
+<section id="browse" class="view">
+<h2>Available food</h2><p class="sub">Browse sample listings or add a new one using the Donate food tab.</p>
+<div class="filters"><input id="searchBox" placeholder="Search food or location…" oninput="renderListings()"><select id="typeFilter" onchange="renderListings()"><option value="">All food types</option><option>Cooked meals</option><option>Bakery</option><option>Produce</option><option>Packaged food</option></select></div>
+<div id="listings" class="food-list"></div>
+</section>
+<section id="donate" class="view">
+<h2>Donate surplus food</h2><p class="sub">Enter the details so a community partner can understand what is available.</p>
+<div class="panel"><form id="donationForm">
+<div class="field"><label for="food">Food name *</label><input id="food" required placeholder="e.g. Vegetable rice meals"></div>
+<div class="field"><label for="kind">Food category *</label><select id="kind" required><option value="">Choose category</option><option>Cooked meals</option><option>Bakery</option><option>Produce</option><option>Packaged food</option></select></div>
+<div class="field"><label for="qty">Quantity (servings/items) *</label><input id="qty" type="number" min="1" required placeholder="e.g. 30"></div>
+<div class="field"><label for="location">Pickup location *</label><input id="location" required placeholder="Area / landmark, city"></div>
+<div class="field"><label for="deadline">Pickup deadline *</label><input id="deadline" type="datetime-local" required></div>
+<div class="field"><label for="storage">Storage / temperature</label><select id="storage"><option>Room temperature</option><option>Refrigerated</option><option>Keep frozen</option><option>Other / specify in notes</option></select></div>
+<div class="field full"><label for="notes">Preparation, allergens and extra notes</label><textarea id="notes" placeholder="Mention preparation time, allergens, packaging, etc."></textarea></div>
+<div class="field full"><label class="check"><input type="checkbox" id="safe" required><span>I confirm this food is safe to donate to the best of my knowledge, and I have provided accurate information. *</span></label></div>
+<div class="field full"><button class="btn" type="submit">Add food listing</button></div>
+</form><p id="formMessage" role="status"></p></div>
+<div class="notice">Safety reminder: follow local food-safety requirements. Do not list food if its safety or storage history is uncertain.</div>
+</section>
+<section id="impact" class="view">
+<h2>Community impact</h2><p class="sub">Illustrative figures for a hackathon prototype—not verified real-world results.</p>
+<div class="stats"><div class="stat"><span>Listed servings/items</span><strong id="impactQty">190</strong></div><div class="stat"><span>Current listings</span><strong id="impactCount">3</strong></div><div class="stat"><span>Food waste prevented</span><strong>Potential</strong></div><div class="stat"><span>Goal</span><strong>Share safely</strong></div></div>
+<div class="panel"><h3>What the full product could measure</h3><p class="sub">Quantity collected, successful handovers, time from listing to pickup, partner response rate, and estimated meals delivered. Real metrics would require a database and verified pickup records.</p></div>
+</section>
+</main>
+<footer>FoodRescue Connect · Hackathon prototype · Sample data only</footer>
+<script>
+let donations=[
+{id:1,food:"Fresh vegetable rice meals",kind:"Cooked meals",qty:60,location:"Lanka, Varanasi",deadline:"Today · 7:00 PM",storage:"Freshly prepared",notes:"Contains common spices; please confirm allergens.",status:"Available"},
+{id:2,food:"Bread rolls and buns",kind:"Bakery",qty:45,location:"Bhelupur, Varanasi",deadline:"Today · 6:30 PM",storage:"Room temperature",notes:"Packed bakery items.",status:"Available"},
+{id:3,food:"Seasonal fruit boxes",kind:"Produce",qty:85,location:"Sigra, Varanasi",deadline:"Today · 8:00 PM",storage:"Room temperature",notes:"Please check produce before distribution.",status:"Available"}
+];
+function showView(id){document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.id===id));document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===id));if(id==="browse")renderListings();window.scrollTo({top:0,behavior:"smooth"})}
+function card(d){return `<article class="food-card"><span class="pill">${escapeHtml(d.kind)}</span><h3>${escapeHtml(d.food)}</h3><p>${escapeHtml(d.notes||"No extra notes provided.")}</p><div class="meta"><span>📦 <b>${d.qty}</b> servings/items</span><span>📍 ${escapeHtml(d.location)}</span></div><div class="meta"><span>⏰ ${escapeHtml(d.deadline)}</span><span class="pill">${escapeHtml(d.status||"Available")}</span></div><button class="btn outline" style="margin-top:13px" onclick="claim(${d.id})">Request pickup</button></article>`}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function renderListings(){let q=(document.getElementById("searchBox")?.value||"").toLowerCase();let t=document.getElementById("typeFilter")?.value||"";let arr=donations.filter(d=>(!q||(d.food+" "+d.location+" "+d.notes).toLowerCase().includes(q))&&(!t||d.kind===t));let markup=arr.length?arr.map(card).join(""):'<div class="empty">No matching listings. Try another search.</div>';document.getElementById("listings").innerHTML=markup;document.getElementById("homeListings").innerHTML=donations.slice(-2).reverse().map(card).join("");updateStats()}
+function claim(id){let d=donations.find(x=>x.id===id);if(!d)return;alert("Demo request recorded for: "+d.food+". In a live website, an NGO account and backend would be needed to coordinate a real pickup.");}
+function updateStats(){let total=donations.reduce((s,d)=>s+Number(d.qty||0),0);document.getElementById("statListings").textContent=donations.length;document.getElementById("statMeals").textContent=total;document.getElementById("impactQty").textContent=total;document.getElementById("impactCount").textContent=donations.length}
+document.getElementById("donationForm").addEventListener("submit",e=>{e.preventDefault();let deadline=document.getElementById("deadline").value;let d={id:Date.now(),food:document.getElementById("food").value.trim(),kind:document.getElementById("kind").value,qty:Number(document.getElementById("qty").value),location:document.getElementById("location").value.trim(),deadline:deadline?new Date(deadline).toLocaleString():"Not specified",storage:document.getElementById("storage").value,notes:document.getElementById("notes").value.trim(),status:"Available"};donations.unshift(d);document.getElementById("formMessage").textContent="Listing added to this demo page! It will remain only while this page session is open.";document.getElementById("donationForm").reset();renderListings();showView("browse")});
+renderListings();
+</script>
+</body></html>
